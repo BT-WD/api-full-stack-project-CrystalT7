@@ -1,8 +1,7 @@
-<!doctype html>
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Film Search</title>
+    <title>Recipes 4 U</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -10,26 +9,32 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="public/style.css" />
-    <script
-      defer
-      src="https://kit.fontawesome.com/e918d10e90.js"
-      crossorigin="anonymous"
-    ></script>
+    <script defer src="https://kit.fontawesome.com/e918d10e90.js" crossorigin="anonymous"></script>
     <script defer src="public/helpers.js"></script>
     <script defer src="public/script.js"></script>
   </head>
   <body>
+
     <header>
       <h1 id="appTitle">🍜Recipes 4 U🍜</h1>
     </header>
-    <form id="genreForm">
-      <label>Choose a recipe:</label>
-      <select name="data container" id="data contain"></select>
-    </form>
-    
 
-<div id="searchResults">
-    <button id="cookBtn">Press to cook!</button>
-   
+    <form id="genreForm">
+      <label for="categoryDropdown">Choose a category:</label>
+      <select id="categoryDropdown"></select>
+    </form>
+
+    <div id="cookBtnDiv">
+      <button id="cookBtn">Press to cook!</button>
+    </div>
+
+    <div id="recipeInfo">
+      <div id="recipePhoto"></div>
+      <div id="recipeText"></div>
+    </div>
+
+
+    <div id="searchResults"></div>
+
   </body>
 </html>
