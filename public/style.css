@@ -18,10 +18,7 @@ body {
     font-family: 'Fredoka One', sans-serif;
 }
 
-#recipeInfo {
-    width:  65%;
-    margin:  32px auto;
-}
+
 
 #recipeInfo:after {
     content:  "";
@@ -29,9 +26,19 @@ body {
     clear:  both;
 }
 
+#recipeInfo {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
 #recipePhoto, #recipeText {
-    width:  50%;
-    float:  left;
+    width: 50%;
+    padding: 32px
+}
+
+#recipeBottom {
+    width: 100%;
 }
 
 img#recipePhoto {
@@ -68,25 +75,33 @@ label {
     margin-bottom: 5px;
 }
 
-select {
+/* select {
     width: 200px;
     height: auto;
 }
-
 #favoriteBtn {
-    text-align: center;
-    margin: 0px auto;  
-}
-
-#favoriteBtn {
+    display: block;
+    margin: 20px auto;
     padding: 15px 25px;
     font-size: 25px;
     border-radius: 12px;
     border-style: none;
-    cursor:  pointer;
-}
-
-#favoriteBtn {
     background-color: #249e57;
     color: darkgreen;
+    cursor: pointer;
+}
+
+#favoriteBtnDiv {
+    text-align: center;
+    margin: 20px auto;
+    display: block;
+} */
+
+
+#ingredientList {
+    margin-bottom: 20px;
+}
+
+#recipeOverview {
+    max-width: 800px;
 }

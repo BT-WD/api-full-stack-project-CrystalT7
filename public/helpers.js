@@ -1,173 +1,120 @@
-let likedMovies = []
-let dislikedMovies = [];
+let favoriteMeals = []
 
-const populateGenreDropdown = (genres) => {
-  const select = document.getElementById("genres");
 
-  for (const genre of genres) {
-    let option = document.createElement("option");
-    option.value = genre.id;
-    option.text = genre.name;
-    select.appendChild(option);
+const populateCategoryDropdown = (categories) =>{
+  const select = document.getElementById("categoryDropdown")
+
+  for(const category of categories){
+    let option = document.createElement("option")
+    option.value = category.strCategory;
+    option.text = category.strCategory
+    select.appendChild(option)
   }
+}
+const getSelectedCategory = () => {
+  const selectedCategory = document.getElementById("categoryDropdown").value;
+  return selectedCategory;
 };
-
-const getSelectedGenre = () => {
-  const selectedGenre = document.getElementById("genres").value;
-  return selectedGenre;
-};
-
 const showBtns = () => {
-  const btnDiv = document.getElementById("likeOrDislikeBtns");
-  btnDiv.removeAttribute("hidden");
+  const btn = document.getElementById("favoriteBtn");
+  btn.removeAttribute("hidden");
 };
 
-const clearCurrentMovie = () => {
-  const moviePosterDiv = document.getElementById("moviePoster");
-  const movieTextDiv = document.getElementById("movieText");
-  moviePosterDiv.innerHTML = "";
-  movieTextDiv.innerHTML = "";
+const clearCurrentMeal = () => {
+  const recipePhotoDiv = document.getElementById("recipePhoto");
+  const recipeTextDiv = document.getElementById("recipeText");
+  recipePhotoDiv.innerHTML = "";
+  recipeTextDiv.innerHTML = "";
 };
 
-const likeMovie = () => {
-  likedMovies.push(info); // "info" is the current movie object
-  console.log("Liked Movies:", likedMovies);
-  updateMovieLists();
-  clearCurrentMovie();
-  showRandomMovie();
+const addToFavorites = () => {
+  favoriteMeals.push(info);
+  updateFavoritesList();
 };
-
-const dislikeMovie = () => {
-  dislikedMovies.push(info);
-  console.log("Disliked Movies:", dislikedMovies);
-  updateMovieLists();
-  clearCurrentMovie();
-  showRandomMovie();
-};
-
-const createMoviePoster = (posterPath) => {
-  const moviePosterUrl = `https://image.tmdb.org/t/p/original/${posterPath}`;
-
+const createRecipePhoto = (thumbUrl) => {
   const posterImg = document.createElement("img");
-  posterImg.setAttribute("src", moviePosterUrl);
-  posterImg.setAttribute("id", "moviePoster");
+  posterImg.setAttribute("src", thumbUrl);
+  posterImg.setAttribute("id", "recipePhoto");
   return posterImg;
 };
 
-const createMovieTitle = (title) => {
+const createRecipeTitle = (title) => {
   const titleHeader = document.createElement("h1");
-  titleHeader.setAttribute("id", "movieTitle");
+  titleHeader.setAttribute("id", "recipeTitle");
   titleHeader.innerHTML = title;
-
   return titleHeader;
 };
 
-const createMovieOverview = (overview) => {
+const createRecipeOverview = (instructions) => {
   const overviewParagraph = document.createElement("p");
-  overviewParagraph.setAttribute("id", "movieOverview");
-  overviewParagraph.innerHTML = overview;
-
+  overviewParagraph.setAttribute("id", "recipeOverview");
+  overviewParagraph.innerHTML = instructions;
   return overviewParagraph;
 };
 
-const getRandomMovie = (movies) => {
-  const randomIndex = Math.floor(Math.random() * movies.length);
-  const randomMovie = movies[randomIndex];
-  return randomMovie;
+
+const getRandomMeal = (meals) => {
+  const randomIndex = Math.floor(Math.random() * meals.length);
+  return meals[randomIndex];
 };
 
-const displayMovie = (movieInfo) => {
-  const moviePosterDiv = document.getElementById("moviePoster");
-  const movieTextDiv = document.getElementById("movieText");
-  const likeBtn = document.getElementById("likeBtn");
-  const dislikeBtn = document.getElementById("dislikeBtn");
+const displayMeal = (mealInfo) => {
+  const recipePhotoDiv = document.getElementById("recipePhoto");
+  const recipeTextDiv = document.getElementById("recipeText");
+  const favoriteBtn = document.getElementById("favoriteBtn");
 
-  const moviePoster = createMoviePoster(movieInfo.poster_path);
-  const titleHeader = createMovieTitle(movieInfo.title);
-  const overviewText = createMovieOverview(movieInfo.overview);
+  const recipePhoto = createRecipePhoto(mealInfo.strMealThumb);
+  const titleHeader = createRecipeTitle(mealInfo.strMeal);
+  const overviewText = createRecipeOverview(mealInfo.strInstructions);
 
+  const categoryArea = document.createElement("p");
+  categoryArea.innerHTML = `<strong>Category:</strong> ${mealInfo.strCategory} | <strong>Cuisine:</strong> ${mealInfo.strArea}`;
 
-  const releaseDate = document.createElement("p");
-  releaseDate.id = "movieReleaseDate";
-  releaseDate.innerHTML = `<strong>Release Date:</strong> ${movieInfo.release_date}`;
+  const ingredientList = document.createElement("ul");
+  ingredientList.id = "ingredientList";
+  ingredientList.innerHTML = "<strong>Ingredients:</strong>";
 
+  for (let i = 1; i <= 20; i++) {
+    const ingredient = mealInfo[`strIngredient${i}`];
+    const measure = mealInfo[`strMeasure${i}`];
+    if (ingredient && ingredient.trim() !== "") {
+      const li = document.createElement("li");
+      li.textContent = `${measure ? measure.trim() : ""} ${ingredient.trim()}`.trim();
+      ingredientList.appendChild(li);
+    }
+  }
 
-    const castList = document.createElement("ul");
-  castList.id = "movieCast";
-  castList.innerHTML = "<strong>Cast:</strong>";
-  
-  movieInfo.cast.forEach(actor => {
-    const li = document.createElement("li");
-    li.textContent = actor.name;
-    castList.appendChild(li);
-  });
-  
-  moviePosterDiv.appendChild(moviePoster);
-  movieTextDiv.appendChild(titleHeader);
-  movieTextDiv.appendChild(releaseDate);
-  movieTextDiv.appendChild(overviewText);
+  recipePhotoDiv.appendChild(recipePhoto);
+  recipeTextDiv.appendChild(titleHeader);
+  recipeTextDiv.appendChild(categoryArea);
+ const bottomSection = document.createElement("div");
+bottomSection.id = "recipeBottom";
 
-  // Director(s)
-  const directorSection = document.createElement("p");
-  directorSection.innerHTML = `<strong>Director:</strong> ${
-    movieInfo.directors.length > 0
-      ? movieInfo.directors.map(d => d.name).join(", ")
-      : "N/A"
-  }`;
-  movieTextDiv.appendChild(directorSection);
+bottomSection.appendChild(ingredientList);
+bottomSection.appendChild(overviewText);
 
-  // Writer(s)
-  const writerSection = document.createElement("p");
-  writerSection.innerHTML = `<strong>Writer(s):</strong> ${
-    movieInfo.writers.length > 0
-      ? movieInfo.writers.map(w => w.name).join(", ")
-      : "N/A"
-  }`;
-  movieTextDiv.appendChild(writerSection);
-
-  // Producer(s)
-  const producerSection = document.createElement("p");
-  producerSection.innerHTML = `<strong>Producer(s):</strong> ${
-    movieInfo.producers.length > 0
-      ? movieInfo.producers.map(p => p.name).join(", ")
-      : "N/A"
-  }`;
-  movieTextDiv.appendChild(producerSection);
-  movieTextDiv.appendChild(castList);
-
-
-
-
+recipeTextDiv.appendChild(bottomSection);
 
   showBtns();
-  likeBtn.onclick = likeMovie;
-  dislikeBtn.onclick = dislikeMovie;
+  favoriteBtn.onclick = addToFavorites;
 };
 
+const updateFavoritesList = () => {
+  const favoritesList = document.getElementById("favoritesList");
+  favoritesList.innerHTML = "";
 
-const updateMovieLists = () => {
-  const likedList = document.getElementById("likedList");
-  const dislikedList = document.getElementById("dislikedList");
-
-  likedList.innerHTML = "";
-  dislikedList.innerHTML = "";
-
-  likedMovies.forEach(movie => {
+  favoriteMeals.forEach(meal => {
     const li = document.createElement("li");
-    li.textContent = movie.title;
-    likedList.appendChild(li);
+    li.textContent = meal.strMeal;
+    favoritesList.appendChild(li);
   });
+};
 
-  dislikedMovies.forEach(movie => {
-    const li = document.createElement("li");
-    li.textContent = movie.title;
-    dislikedList.appendChild(li);
-  });
-  const displaySearchResults = (results, type) => {
+const displaySearchResults = (results) => {
   const container = document.getElementById("searchResults");
   container.innerHTML = "";
 
-  if (results.length === 0) {
+  if (!results || results.length === 0) {
     container.innerHTML = "<p>No results found.</p>";
     return;
   }
@@ -175,26 +122,14 @@ const updateMovieLists = () => {
   results.forEach(item => {
     const div = document.createElement("div");
     div.classList.add("searchResult");
-
-    if (type === "movie") {
-      div.innerHTML = `
-        <h3>${item.title}</h3>
-        <p>Release: ${item.release_date || "N/A"}</p>
-      `;
-      div.onclick = async () => {
-        const info = await getMovieInfo(item);
-        displayMovie(info);
-      };
-    }
-
-    if (type === "person") {
-      div.innerHTML = `
-        <h3>${item.name}</h3>
-        <p>Known for: ${item.known_for_department}</p>
-      `;
-    }
-
+    div.innerHTML = `
+      <h3>${item.strMeal}</h3>
+      <p>Category: ${item.strCategory || "N/A"}</p>
+    `;
+    div.onclick = async () => {
+      const mealDetails = await getMealInfo(item);
+      displayMeal(mealDetails);
+    };
     container.appendChild(div);
   });
-};
 };
