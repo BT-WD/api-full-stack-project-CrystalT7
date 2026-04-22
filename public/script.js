@@ -79,6 +79,7 @@ const searchMeals = async (query) => {
   const endpoint = `search.php`;
   const params = `?s=${encodeURIComponent(query)}`;
   const url = `${mealBaseUrl}${endpoint}${params}`;
+
   try {
     const response = await fetch(url);
     if (response.ok) {
@@ -88,14 +89,20 @@ const searchMeals = async (query) => {
   } catch (error) {
     console.error("Meal search error:", error);
   }
-  document.getElementById("searchBtn").onclick = async () => {
-  const query = document.getElementById("searchInput").value;
-  const results = await searchMeals(query);
-  displaySearchResults(results);
-};
 };
 
 getCategories().then(populateCategoryDropdown)
 cookBtn.onclick = showRandomMeal
 
 updateFavoritesList()
+
+const searchBtn = document.getElementById("searchBtn");
+
+searchBtn.onclick = async () => {
+  const query = document.getElementById("searchInput").value.trim();
+
+  if (!query) return;
+
+  const results = await searchMeals(query);
+  displaySearchResults(results);
+};
