@@ -97,3 +97,5 @@ const searchMeals = async (query) => {
 
 getCategories().then(populateCategoryDropdown)
 cookBtn.onclick = showRandomMeal
+
+updateFavoritesList()

@@ -1,4 +1,4 @@
-let favoriteMeals = []
+let favoriteMeals = JSON.parse(localStorage.getItem("favoriteMeals")) || [];
 
 
 const populateCategoryDropdown = (categories) =>{
@@ -27,10 +27,7 @@ const clearCurrentMeal = () => {
   recipeTextDiv.innerHTML = "";
 };
 
-const addToFavorites = () => {
-  favoriteMeals.push(info);
-  updateFavoritesList();
-};
+
 const createRecipePhoto = (thumbUrl) => {
   const posterImg = document.createElement("img");
   posterImg.setAttribute("src", thumbUrl);
@@ -96,7 +93,7 @@ bottomSection.appendChild(overviewText);
 recipeTextDiv.appendChild(bottomSection);
 
   showBtns();
-  favoriteBtn.onclick = addToFavorites;
+  favoriteBtn.onclick = () => addToFavorites(mealInfo)
 };
 
 const updateFavoritesList = () => {
@@ -132,4 +129,10 @@ const displaySearchResults = (results) => {
     };
     container.appendChild(div);
   });
+};
+
+const addToFavorites = (meal) => {
+  favoriteMeals.push(meal);
+  localStorage.setItem("favoriteMeals", JSON.stringify(favoriteMeals));
+  updateFavoritesList();
 };
